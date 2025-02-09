@@ -20,10 +20,10 @@ class TaskList {
         this.updateTaskList();
     }
 
-    markAsCompleted(id) {
+    toggleTaskStatus(id) {
         const task = this.tasks.find(task => task.id === id);
         if (task) {
-            task.completed = true;
+            task.completed = !task.completed;
             this.updateTaskList();
         }
     }
@@ -39,11 +39,13 @@ class TaskList {
 
         this.tasks.forEach(task => {
             const listItem = document.createElement("li");
+            listItem.className = task.completed ? 'completed' : '';
             listItem.innerHTML = `
                 <div>
                     <span><strong>Tarefa:</strong> ${task.name}</span><br>
                     <span><strong>Criada em:</strong> ${task.createdAt}</span><br>
-                    <button onclick="myTasks.markAsCompleted(${task.id})">✔</button>
+                    <span><strong>Status:</strong> ${task.completed ? 'Concluída' : 'Pendente'}</span><br>
+                    <button onclick="myTasks.toggleTaskStatus(${task.id})">${task.completed ? 'Marcar como Pendente' : 'Marcar como Concluída'}</button>
                     <button onclick="myTasks.removeTask(${task.id})">✖</button>
                 </div>
             `;
@@ -58,8 +60,4 @@ function addTask() {
     const taskInput = document.getElementById("taskInput");
     myTasks.addTask(taskInput.value);
     taskInput.value = "";
-}
-
-function markAsCompleted(id) {
-    myTasks.markAsCompleted(id);
 }
